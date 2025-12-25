@@ -38,6 +38,3 @@ I hope this repository helps current and future DDMer by providing clean, well-c
 Happy learning, and best of luck with the MSDM program!  
 — Fall 2025 Cohort Student  
 
-#HKUST #MSDM #DataDrivenModeling #DataScience #MachineLearning #ComputationalModeling
-
-! Good job on sharing your work with the community — it will definitely help others. 🚀
