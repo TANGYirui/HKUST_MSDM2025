@@ -1,0 +1,48 @@
+K= 1 | MSE: 44.5171 | Time: 0.2333s
+K= 2 | MSE: 46.0559 | Time: 0.1833s
+K= 3 | MSE: 41.5232 | Time: 0.2329s
+K= 4 | MSE: 40.8879 | Time: 0.2513s
+K= 5 | MSE: 42.2411 | Time: 0.1814s
+K= 6 | MSE: 43.8894 | Time: 0.1601s
+K= 7 | MSE: 43.9851 | Time: 0.2052s
+K= 8 | MSE: 42.8303 | Time: 0.1657s
+K= 9 | MSE: 44.0434 | Time: 0.1741s
+K=10 | MSE: 45.6143 | Time: 0.1766s
+K=11 | MSE: 45.7835 | Time: 0.1585s
+K=12 | MSE: 45.8784 | Time: 0.1773s
+K=13 | MSE: 45.7650 | Time: 0.2024s
+K=14 | MSE: 46.5139 | Time: 0.1795s
+K=15 | MSE: 46.5349 | Time: 0.2339s
+K=16 | MSE: 48.1896 | Time: 0.2505s
+K=17 | MSE: 49.1327 | Time: 0.1999s
+K=18 | MSE: 48.9265 | Time: 0.1647s
+K=19 | MSE: 50.1288 | Time: 0.2410s
+K=20 | MSE: 51.0900 | Time: 0.2594s
+Best K (without standardization): 4
+
+K= 1 | MSE: 25.4693 | Time: 0.2311s
+K= 2 | MSE: 16.7776 | Time: 0.1848s
+K= 3 | MSE: 19.7349 | Time: 0.2050s
+K= 4 | MSE: 20.0199 | Time: 0.2032s
+K= 5 | MSE: 21.2268 | Time: 0.2293s
+K= 6 | MSE: 22.2554 | Time: 0.1665s
+K= 7 | MSE: 21.6547 | Time: 0.2166s
+K= 8 | MSE: 20.8683 | Time: 0.1843s
+K= 9 | MSE: 21.0368 | Time: 0.2165s
+K=10 | MSE: 20.5081 | Time: 0.1915s
+K=11 | MSE: 20.5842 | Time: 0.1967s
+K=12 | MSE: 20.4433 | Time: 0.2073s
+K=13 | MSE: 20.8555 | Time: 0.1900s
+K=14 | MSE: 21.5664 | Time: 0.1709s
+K=15 | MSE: 21.7233 | Time: 0.1705s
+K=16 | MSE: 22.0933 | Time: 0.1880s
+K=17 | MSE: 22.6631 | Time: 0.2492s
+K=18 | MSE: 23.3725 | Time: 0.2001s
+K=19 | MSE: 24.1986 | Time: 0.2498s
+K=20 | MSE: 24.4539 | Time: 0.1965s
+Best K (with standardization): 2
+
+Best MSE without standardization: 40.8879
+Best MSE with standardization: 16.7776
+
+Yes, standardization improves performance.

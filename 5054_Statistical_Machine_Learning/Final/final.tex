@@ -1,0 +1,386 @@
+\documentclass[6pt,a4paper]{ctexart}
+% ========== 页面与布局设置 ==========
+\usepackage[margin=0.3in]{geometry}
+\usepackage{multicol}
+\setlength{\columnsep}{0.3cm}
+
+% ========== 中文与字体支持 ==========
+\usepackage{ctex}
+
+% ========== 排版微调与优化 ==========
+\usepackage{microtype}
+\usepackage{setspace}
+\linespread{0.75}  % 进一步缩小行距（原0.8 → 0.75），减少小节间空白
+\usepackage{ragged2e}
+
+% ========== 数学与列表工具 ==========
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{enumitem}
+\setlist{nosep, leftmargin=*, topsep=0pt, partopsep=0pt, parsep=0pt}  % 进一步压缩列表间距
+
+% ========== 缩小 section/subsection 的垂直间距 ==========
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{2pt}{1pt}      % 主标题：前后间距缩小
+\titlespacing*{\subsection}{0pt}{1.5pt}{0.5pt}  % 子标题：前后间距大幅缩小
+\titlespacing*{\subsubsection}{0pt}{1pt}{0.5pt}
+
+\begin{document}
+\begin{multicols}{2}
+\RaggedRight
+
+% ====================== Chapter 7 ======================
+\section*{Chapter 7: Non-linear Regression}
+
+\subsection*{7.0 Overview}
+\begin{itemize}
+    \item \textbf{线性模型局限性:} 均值响应必须是输入的线性函数，这在实践中通常不成立。
+    \item \textbf{核心思想:} 基函数法 (basis function approach)，使用输入变量的派生输入 (derived inputs)。
+    \item \textbf{重要模型 (部分):} 多项式回归、阶梯函数、回归样条、平滑样条、局部回归、广义可加模型 (GAM)。
+\end{itemize}
+
+\subsection*{7.1 Polynomial Regression}
+\begin{itemize}
+    \item \textbf{模型形式:} 是一个多重线性回归模型，输入为 $(x_{i},x_{i}^{2},...,x_{i}^{p})$。
+    \item \textbf{问题/缺点:} 难以确定合适的阶数 $p$；难以拟合局部高度变化的函数。
+    \item \textbf{模型选择技巧:} 使用方差分析 (ANOVA) 比较不同阶数的模型。
+\end{itemize}
+
+\textbf{多项式回归模型 ($p$ 阶):}
+$$ y_{i}=\beta_{0}+\beta_{1}x_{i}+\beta_{2}x_{i}^{2}+...+\beta_{p}x_{i}^{p}+\epsilon_{i} $$
+
+\textbf{广义线性模型 (Generalized linear model, GLM) 公式:}
+$$ E(Y|X)=g(X^{T}\beta) $$
+
+\textbf{带多项式回归的逻辑模型 (二元响应):}
+$$ p(y_{i}=1|x_{i})=\frac{\exp(\beta_{0}+\beta_{1}x_{i}+...+\beta_{p}x_{i}^{p})}{1+\exp(\beta_{0}+\beta_{1}x_{i}+...+\beta_{p}x_{i}^{p})} $$
+
+\subsection*{7.2 Step Functions}
+\begin{itemize}
+    \item \textbf{概念:} 分段常数函数 (Piecewise constant functions)。
+    \item \textbf{缺点:} 非光滑，甚至不连续；分割点 (cutpoints) 的数量和位置难以确定。
+\end{itemize}
+
+\subsection*{7.3 Regression Splines}
+\begin{itemize}
+    \item \textbf{概念:} 分段多项式函数，切分点称为结点 (knots)。
+    \item \textbf{样条函数:} 阶数 $d$ 的样条函数在结点处具有直到 $d-1$ 阶的连续导数。
+    \item \textbf{三次样条 (Cubic spline):} 分段三次多项式，在结点处连续且具有连续的一阶和二阶导数。
+    \item \textbf{自然样条 (Natural spline):} 在边界附近施加进一步限制，表现通常优于三次样条。
+    \item \textbf{优点:} 捕捉局部变化；边界行为比多项式回归更好。
+\end{itemize}
+
+\textbf{三次样条模型 (截断幂基, $d=3$):}
+$$ y_{i}=\beta_{0}+\beta_{1}x_{i}+\beta_{2}x_{i}^{2}+\beta_{3}x_{i}^{3}+\sum_{k=1}^{K}\gamma_{k}(x_{i}-\xi_{k})_{+}^{3}+\epsilon_{i} $$
+
+\textbf{截断幂函数:}
+$$ h(x, \xi) = (x-\xi)_{+}^{d} $$
+
+\subsection*{7.4 Smoothing Splines}
+\begin{itemize}
+    \item \textbf{平滑参数 ($\lambda$):} 控制粗糙度惩罚。
+    \item \textbf{解:} 平滑样条问题的解是一个在每个 $x_i$ 处都有结点的自然三次样条。
+\end{itemize}
+
+\textbf{最小化目标 (惩罚残差平方和):}
+$$ \min_{f}\left\{ \frac{1}{n} \sum_{i=1}^{n} (y_{i}-f(x_{i}))^{2} + \lambda \int_{a}^{b} [f''(x)]^{2} dx \right\} $$
+
+\textbf{平滑参数 $\lambda$ 的极限行为:}
+\begin{itemize}
+    \item $\lambda \to \infty$: $f$ 为线性最小二乘拟合。
+    \item $\lambda \to 0$: $f$ 在每个 $x_i$ 处插值 $y_i$。
+\end{itemize}
+
+\subsection*{7.5 Local Regression}
+\begin{itemize}
+    \item \textbf{核心:} 在目标点 $x_0$ 附近进行加权最小二乘拟合。
+    \item \textbf{权重 $K_{i0}$:} 由核函数 (Kernel function, $k(t)$) 和带宽 $h$ 决定。
+\end{itemize}
+
+\textbf{局部多项式回归目标:}
+$$ \sum_{i=1}^{n} K_{i0} \left( y_{i} - \beta_{0} - \beta_{1}(x_{i}-x_{0}) - \cdots - \beta_{p}(x_{i}-x_{0})^{p} \right)^{2} $$
+
+\textbf{权重 $K_{i0}$ 公式:}
+$$ K_{i0}=\frac{1}{h} k\left( \frac{x_{i}-x_{0}}{h} \right) $$
+
+\subsection*{7.6 Generalized Additive Model (GAM)}
+\begin{itemize}
+    \item \textbf{特点:} 保持可加性，但允许每个预测变量使用任意非线性函数 $f_j$。
+    \item \textbf{拟合方法:} 反向拟合算法 (Backfitting algorithm)。
+\end{itemize}
+
+\textbf{GAM (回归) 模型公式:}
+$$ Y_{i}=\beta_{0}+\sum_{j=1}^{p}f_{j}(X_{ij})+\epsilon_{i} $$
+
+\textbf{GAM (GLM) 模型公式:}
+$$ E(Y|X)=g\left(\beta_{0}+\sum_{j=1}^{p}f_{j}(X_{ij})\right) $$
+
+\subsection*{7.7 Reproducing Kernel Hilbert space (RKHS)}
+\begin{itemize}
+    \item \textbf{非线性扩展:} $ Y = f(X) + \epsilon = \beta^{\top}\Phi(X) + \epsilon $。
+    \item \textbf{表示定理 (Representer Theorem):} 核岭回归的解 $f^{\ast}(\cdot)$ 必须是训练数据的核函数 $k(x_i, \cdot)$ 的加权和。
+\end{itemize}
+
+\textbf{核岭回归 (Kernel Ridge Regression) 目标:}
+$$ \min_{f\in\mathcal{H}_{k}} \frac{1}{n} \sum_{i=1}^{n} (y_{i}-f(x_{i}))^{2} + \lambda \|f\|_{\mathcal{H}_{k}}^{2} $$
+
+\textbf{核岭回归 (向量形式) 最小化目标:}
+$$ \min_{\mathbf{\alpha}} \|\mathbf{y}-\mathbf{K}\mathbf{\alpha}\|^{2} + \lambda \mathbf{\alpha}^{\top}\mathbf{K}\mathbf{\alpha} $$
+
+% ====================== Chapter 8 ======================
+\section*{Chapter 8: Tree-based Methods}
+
+\subsection*{8.0 Basic Concepts}
+\begin{itemize}
+    \item \textbf{数据建模文化 (Data modelling culture):} 假设数据由给定的随机数据模型生成（例如：线性回归）。
+    \item \textbf{算法建模文化 (Algorithmic modelling culture):} 将数据生成机制视为未知，使用算法模型（例如：决策树、神经网络）。
+    \item \textbf{决策树 (Decision Tree):} 将特征空间递归地二分 (recursively partition) 成不重叠的区域 $R_1, R_2, \ldots, R_J$。
+    \item \textbf{优点:} 易于解释和可视化；能自动处理定性预测变量 (qualitative predictors)。
+    \item \textbf{缺点:} 预测准确性通常低于其他回归和分类方法；对数据的小变化非常不稳定 (high variance)。
+\end{itemize}
+
+\subsection*{8.1 Regression Trees}
+\begin{itemize}
+    \item \textbf{预测:} 对落入区域 $R_j$ 的观测，预测值等于该区域内训练响应的平均值 $c_j$。
+    \item \textbf{目标:} 寻找 $R_1, \ldots, R_J$ 以最小化残差平方和 (RSS)。
+\end{itemize}
+
+\textbf{最小化目标 (残差平方和, RSS):}
+$$ \sum_{j=1}^{J} \sum_{i \in R_{j}} (y_{i} - \hat{y}_{R_{j}})^{2} $$
+
+\subsection*{8.2 Classification Trees}
+\begin{itemize}
+    \item \textbf{预测:} 对落入区域 $R_j$ 的观测，预测为该区域内最常出现的类别 (majority class)。
+    \item \textbf{分裂标准:} 最小化错误分类率 (Misclassification Error Rate)、Gini Index (基尼指数) 或 Cross-Entropy (交叉熵/信息熵)。
+\end{itemize}
+
+\textbf{错误分类率 (Misclassification Error Rate):}
+$$ E = 1 - \max_{k}(\hat{p}_{jk}) $$
+
+\textbf{基尼指数 (Gini Index):}
+$$ G = \sum_{k=1}^{K} \hat{p}_{jk} (1 - \hat{p}_{jk}) $$
+
+\textbf{交叉熵 (Cross-Entropy):}
+$$ D = - \sum_{k=1}^{K} \hat{p}_{jk} \log (\hat{p}_{jk}) $$
+
+\subsection*{8.3 Tree Pruning}
+\begin{itemize}
+    \item \textbf{问题:} 构建完整的树通常导致过拟合 (overfit)。
+    \item \textbf{方法:} 成本复杂度剪枝 (Cost Complexity Pruning)，也称作弱链接剪枝 (Weakest Link Pruning)。
+    \item \textbf{过程:}
+    \begin{enumerate}
+        \item 构造一个非常大的树 $T_0$。
+        \item 使用成本复杂度剪枝获得一个子树序列 $T_{\alpha}$。
+        \item 使用交叉验证 (CV) 或独立测试集选择最优 $\alpha$。
+    \end{enumerate}
+\end{itemize}
+
+\textbf{成本复杂度准则 (Cost Complexity Criterion):}
+$$ \sum_{m=1}^{|T|} \sum_{i: x_{i} \in R_{m}} (y_{i} - \hat{y}_{R_{m}})^{2} + \alpha |T| $$
+
+\subsection*{8.4 Ensemble Methods}
+
+\subsubsection*{Bagging (Bootstrap Aggregation)}
+\begin{itemize}
+    \item \textbf{核心:} 通过多次有放回抽样训练多个决策树，然后取平均（回归）或多数投票（分类）以降低方差。
+    \item \textbf{袋外估计 (OOB Estimation):} 使用未被选入当前 Bootstrap 样本的观测进行预测，计算泛化误差。
+    \item \textbf{变量重要性 (Variable Importance):} 通过计算某个特征引起的 RSS/Gini Index 总减少量来衡量。
+\end{itemize}
+
+\subsubsection*{Random Forests}
+\begin{itemize}
+    \item \textbf{核心:} 在 Bagging 基础上，每次分裂时仅考虑 $m$ 个随机子集变量。
+    \item \textbf{参数 $m$:} 通常 $m \approx \sqrt{p}$（分类）或 $m = p/3$（回归）。
+    \item \textbf{效果:} 进一步解耦单个树，比 Bagging 方差更低。
+\end{itemize}
+
+\subsubsection*{Boosting}
+\begin{itemize}
+    \item \textbf{核心:} 顺序拟合弱学习器；每棵新树拟合前树的残差。
+    \item \textbf{参数:}
+    \begin{itemize}
+        \item \textbf{树的数量 $M$:} 大 $M$ 易过拟合。
+        \item \textbf{学习率 $\lambda$:} 通常很小（0.01 或 0.001）。
+        \item \textbf{树深度 $d$:} 通常 $d=1$ (stump) 效果好。
+    \end{itemize}
+\end{itemize}
+
+\textbf{Boosting (回归) 算法:}
+$$ f(x) \leftarrow f(x) + \lambda \hat{f}^{b}(x) $$
+
+% ====================== Chapter 9 ======================
+\section*{Chapter 9: Support Vector Machines}
+
+\subsection*{9.1 Maximal Margin Classifier}
+\begin{itemize}
+    \item \textbf{概念:} 找到超平面使其与最近样本的间隔最大化。
+    \item \textbf{适用条件:} 仅线性可分二分类。
+    \item \textbf{支持向量:} 落在间隔边界上的点。
+\end{itemize}
+
+\textbf{超平面定义:}
+$$ f(x) = x^{T}\beta + \beta_{0} = 0 $$
+
+\textbf{优化目标:}
+$$ \max_{\beta, \beta_{0}, M} M \quad \text{s.t.} \quad \sum_{j=1}^{p} \beta_{j}^{2} = 1, \quad y_{i}(x_{i}^{T}\beta + \beta_{0}) \ge M $$
+
+\subsection*{9.2 Support Vector Classifier}
+\begin{itemize}
+    \item \textbf{核心:} 允许少量错分或落入间隔内。
+    \item \textbf{松弛变量 $\xi_i$:} 衡量违反程度。
+    \item \textbf{成本参数 $C$:} 控制间隔与误分类权衡。
+\end{itemize}
+
+\textbf{优化目标:}
+$$ \min \left\{ \frac{1}{2} \|\beta\|^{2} + C \sum \xi_{i} \right\} \quad \text{s.t.} \quad y_{i}(x_{i}^{T}\beta + \beta_{0}) \ge 1 - \xi_{i}, \ \xi_{i} \ge 0 $$
+
+\subsection*{9.3 Support Vector Machine}
+\begin{itemize}
+    \item \textbf{核心:} 核方法实现非线性边界。
+    \item \textbf{核函数 $K(x_i, x_{i'})$:} 计算高维内积。
+    \item \textbf{核技巧:} 避免显式高维映射。
+\end{itemize}
+
+\textbf{决策函数:}
+$$ f(x) = \text{sign}\left( \sum_{i \in \mathcal{S}} \alpha_{i} y_{i} K(x, x_{i}) + \beta_{0} \right) $$
+
+\textbf{常用核函数:}
+\begin{itemize}
+    \item \textbf{Linear:} $ K = \sum x_{ij} x_{i'j} $
+    \item \textbf{Polynomial:} $ K = (1 + \sum x_{ij} x_{i'j})^{d} $
+    \item \textbf{RBF:} $ K = \exp(-\gamma \sum (x_{ij} - x_{i'j})^{2}) $
+\end{itemize}
+
+\subsection*{9.5 SVMs with More Than 2 Classes}
+\begin{itemize}
+    \item \textbf{One-vs-One:} 训练 $K(K-1)/2$ 个分类器，多数投票。
+    \item \textbf{One-vs-All:} 训练 $K$ 个分类器，取最高分数。
+\end{itemize}
+
+\subsection*{9.6 Relation to Logistic Regression}
+\begin{itemize}
+    \item \textbf{共同框架:} 损失 + 惩罚。
+    \item \textbf{Logistic:} Log-Likelihood Loss + L2/L1。
+    \item \textbf{SVC:} Hinge Loss + L2。
+\end{itemize}
+
+\textbf{Hinge Loss:}
+$$ L(y, f(x)) = \max(0, 1 - y f(x)) $$
+
+% ====================== Chapter 10 ======================
+\section*{Chapter 10: Unsupervised Learning}
+
+\subsection*{10.0 Overview}
+\begin{itemize}
+    \item \textbf{定义:} 无响应变量 $Y$。
+    \item \textbf{目标:} 发现数据结构。
+    \item \textbf{主要方法:} 降维 (PCA)、聚类 (K-means, Hierarchical)。
+\end{itemize}
+
+\subsection*{10.1 Principal Component Analysis}
+\begin{itemize}
+    \item \textbf{核心:} 低维表示捕获最大方差。
+    \item \textbf{第 $m$ 个主成分:} 最大方差且与前 $m-1$ 个不相关。
+\end{itemize}
+
+\textbf{第 $m$ 个主成分:}
+$$ Z_{im} = \sum_{j=1}^{p} \phi_{mj} X_{ij} $$
+
+\textbf{PVE:}
+$$ PVE_{m} = \frac{\lambda_{m}}{\sum \lambda_{l}} $$
+
+\textbf{Cumulative PVE:}
+$$ \frac{\sum_{l=1}^{m} \lambda_{l}}{\sum \lambda_{l}} $$
+
+\textbf{选择 $M$:} Elbow / Scree Plot。
+
+\subsection*{10.2 Clustering Analysis}
+
+\subsubsection*{K-Means Clustering}
+\textbf{目标:}
+$$ \min \sum_{k=1}^{K} \sum_{i,i' \in C_k} \|x_i - x_{i'}\|^2 $$
+
+\subsubsection*{Hierarchical Clustering}
+\begin{itemize}
+    \item \textbf{特点:} 产生树状图，无需预设 $K$。
+    \item \textbf{链接方式:} Complete, Average, Single, Centroid。
+\end{itemize}
+
+% ====================== Chapter 11 ======================
+\section*{Chapter 11: Semi-Supervised and Self-Supervised Learning}
+
+\subsection*{11.1 Semi-Supervised Learning}
+\begin{itemize}
+    \item \textbf{定义:} 少量标签 + 大量未标签数据。
+\end{itemize}
+
+\subsection*{11.2 SSL Assumptions}
+\begin{itemize}
+    \item \textbf{Smoothness:} 近距离点标签相似。
+    \item \textbf{Cluster:} 同簇同类，决策边界低密度区。
+    \item \textbf{Manifold:} 数据位于低维流形。
+\end{itemize}
+
+\subsection*{11.4 SSL Algorithms}
+
+\subsubsection*{Self-Training}
+逐步用高置信伪标签扩展标签集。
+
+\subsubsection*{Co-Training}
+两个独立视图互相生成伪标签。
+
+\subsubsection*{Graph-based SSL}
+标签传播 / 扩散。
+
+\textbf{Graph Laplacian:}
+$$ \mathcal{L} = D - W $$
+
+\subsection*{11.8 Self-Supervised Learning}
+\begin{itemize}
+    \item \textbf{核心:} 前置任务产生伪标签预训练表示。
+\end{itemize}
+
+\textbf{Triplet Loss:}
+$$ L = \max(0, \|f(A)-f(P)\|^2 - \|f(A)-f(N)\|^2 + \alpha) $$
+
+% ====================== Chapter 12 ======================
+\section*{Chapter 12: Intro to Deep Learning and Deep Generative Models}
+
+\subsection*{12.1 Intro to Deep Learning}
+\begin{itemize}
+    \item \textbf{核心:} 多层神经网络自动学习特征。
+    \item \textbf{Universal Approximation Theorem:} 单隐藏层足以逼近任意连续函数。
+\end{itemize}
+
+\subsection*{12.2 Simple Neural Network}
+\textbf{神经元输出:}
+$$ A_{k} = g \left( \beta_{0k} + \sum X_{j} \beta_{jk} \right) $$
+
+\subsection*{12.3 Activation Functions}
+Sigmoid, Tanh, ReLU。
+
+\subsection*{12.4 Loss and Optimization}
+反向传播 + 梯度下降。
+
+\textbf{更新:}
+$$ W := W - \alpha \nabla J(W) $$
+
+\subsection*{12.5 Convolutional Neural Networks}
+卷积 + 池化。
+
+\subsection*{12.6 Recurrent Neural Networks}
+隐藏状态 $h_t = f_W(h_{t-1}, x_t)$；LSTM/GRU 解决梯度问题。
+
+\subsection*{12.7 Deep Generative Models}
+
+\subsubsection*{VAE}
+Encoder → Latent z → Decoder。
+
+\subsubsection*{GAN}
+\textbf{目标:}
+$$ \min_G \max_D \, E[\log D(x)] + E[\log(1-D(G(z)))] $$
+
+\subsection*{12.9 Transformer}
+自注意力 + 多头注意力 + 位置编码。
+
+\end{multicols}
+\end{document}

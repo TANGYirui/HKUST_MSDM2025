@@ -1,0 +1,139 @@
+['Year', 'Status', 'Life expectancy ', 'Adult Mortality', 'infant deaths', 'Alcohol', 'percentage expenditure', 'Hepatitis B', 'Measles ', ' BMI ', 'under-five deaths ', 'Polio', 'Total expenditure', 'Diphtheria ', ' HIV/AIDS', 'GDP', 'Population', ' thinness  1-19 years', ' thinness 5-9 years', 'Income composition of resources', 'Schooling']
+
+Missing values number before dropping:
+Year                                 0
+Status                               0
+Life expectancy                     10
+Adult Mortality                     10
+infant deaths                        0
+Alcohol                            194
+percentage expenditure               0
+Hepatitis B                        553
+Measles                              0
+ BMI                                34
+under-five deaths                    0
+Polio                               19
+Total expenditure                  226
+Diphtheria                          19
+ HIV/AIDS                            0
+GDP                                448
+Population                         652
+ thinness  1-19 years               34
+ thinness 5-9 years                 34
+Income composition of resources    167
+Schooling                          163
+dtype: int64
+Shape of Dataframe after dropping NA: (1649, 21)
+
+Question 1: Full Model Summary
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:       Life expectancy    R-squared:                       0.839
+Model:                            OLS   Adj. R-squared:                  0.837
+Method:                 Least Squares   F-statistic:                     422.9
+Date:                Mon, 20 Oct 2025   Prob (F-statistic):               0.00
+Time:                        13:35:56   Log-Likelihood:                -4421.2
+No. Observations:                1649   AIC:                             8884.
+Df Residuals:                    1628   BIC:                             8998.
+Df Model:                          20                                         
+Covariance Type:            nonrobust                                         
+===================================================================================================
+                                      coef    std err          t      P>|t|      [0.025      0.975]
+---------------------------------------------------------------------------------------------------
+const                             308.1207     46.223      6.666      0.000     217.457     398.784
+Year                               -0.1272      0.023     -5.510      0.000      -0.172      -0.082
+Status                              0.8865      0.335      2.644      0.008       0.229       1.544
+Adult Mortality                    -0.0162      0.001    -17.171      0.000      -0.018      -0.014
+infant deaths                       0.0887      0.011      8.376      0.000       0.068       0.110
+Alcohol                            -0.1313      0.034     -3.901      0.000      -0.197      -0.065
+percentage expenditure              0.0003      0.000      1.691      0.091   -4.83e-05       0.001
+Hepatitis B                        -0.0033      0.004     -0.732      0.464      -0.012       0.005
+Measles                         -1.033e-05   1.07e-05     -0.966      0.334   -3.13e-05    1.07e-05
+ BMI                                0.0318      0.006      5.345      0.000       0.020       0.044
+under-five deaths                  -0.0666      0.008     -8.682      0.000      -0.082      -0.052
+Polio                               0.0058      0.005      1.132      0.258      -0.004       0.016
+Total expenditure                   0.0922      0.040      2.281      0.023       0.013       0.171
+Diphtheria                          0.0140      0.006      2.387      0.017       0.002       0.026
+ HIV/AIDS                          -0.4481      0.018    -25.174      0.000      -0.483      -0.413
+GDP                              2.451e-05   2.83e-05      0.867      0.386   -3.09e-05    7.99e-05
+Population                      -6.085e-10   1.73e-09     -0.351      0.726   -4.01e-09    2.79e-09
+ thinness  1-19 years              -0.0058      0.053     -0.111      0.912      -0.109       0.097
+ thinness 5-9 years                -0.0501      0.052     -0.966      0.334      -0.152       0.052
+Income composition of resources    10.4497      0.833     12.549      0.000       8.816      12.083
+Schooling                           0.8949      0.059     15.142      0.000       0.779       1.011
+==============================================================================
+Omnibus:                       31.845   Durbin-Watson:                   0.707
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               58.052
+Skew:                          -0.107   Prob(JB):                     2.48e-13
+Kurtosis:                       3.894   Cond. No.                     3.80e+10
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 3.8e+10. This might indicate that there are
+strong multicollinearity or other numerical problems.
+
+Significant predicting variables (p < 0.05): ['const', 'Year', 'Status', 'Adult Mortality', 'infant deaths', 'Alcohol', ' BMI ', 'under-five deaths ', 'Total expenditure', 'Diphtheria ', ' HIV/AIDS', 'Income composition of resources', 'Schooling']
+
+Question 2: 95% CI for 'Adult Mortality' and 'HIV/AIDS'
+Adult Mortality 95% CI: [-0.0181, -0.0144]
+HIV/AIDS 95% CI: [-0.4830, -0.4131]
+Yes, we are confident Adult Mortality has a negative impact (CI entirely negative).
+Yes, we are confident HIV/AIDS has a negative impact (CI entirely negative).
+
+Question 3: 97% CI for 'Schooling' and 'Alcohol'
+Schooling 97% CI: [0.7665, 1.0232]
+Alcohol 97% CI: [-0.2044, -0.0582]
+Schooling has a positive impact on life expectancy (CI entirely positive).
+Alcohol has a negative impact on life expectancy (CI entirely negative).
+
+Question 4: Top 7 predictors by p-value
+Top 7 most influential predictors by p-value: [' HIV/AIDS', 'Adult Mortality', 'Schooling', 'Income composition of resources', 'under-five deaths ', 'infant deaths', 'Year']
+
+Smaller Model Summary:
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:       Life expectancy    R-squared:                       0.824
+Model:                            OLS   Adj. R-squared:                  0.823
+Method:                 Least Squares   F-statistic:                     1096.
+Date:                Mon, 20 Oct 2025   Prob (F-statistic):               0.00
+Time:                        13:35:56   Log-Likelihood:                -4493.3
+No. Observations:                1649   AIC:                             9003.
+Df Residuals:                    1641   BIC:                             9046.
+Df Model:                           7                                         
+Covariance Type:            nonrobust                                         
+===================================================================================================
+                                      coef    std err          t      P>|t|      [0.025      0.975]
+---------------------------------------------------------------------------------------------------
+const                             285.5374     45.502      6.275      0.000     196.289     374.786
+ HIV/AIDS                          -0.4498      0.018    -24.615      0.000      -0.486      -0.414
+Adult Mortality                    -0.0181      0.001    -18.845      0.000      -0.020      -0.016
+Schooling                           1.0631      0.054     19.677      0.000       0.957       1.169
+Income composition of resources    11.9119      0.825     14.440      0.000      10.294      13.530
+under-five deaths                  -0.0675      0.007     -9.171      0.000      -0.082      -0.053
+infant deaths                       0.0871      0.010      8.796      0.000       0.068       0.106
+Year                               -0.1158      0.023     -5.105      0.000      -0.160      -0.071
+==============================================================================
+Omnibus:                       35.229   Durbin-Watson:                   0.657
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               70.102
+Skew:                          -0.081   Prob(JB):                     5.99e-16
+Kurtosis:                       3.997   Cond. No.                     1.01e+06
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 1.01e+06. This might indicate that there are
+strong multicollinearity or other numerical problems.
+
+Question 5: Prediction with 99% CI
+       mean   mean_se  mean_ci_lower  mean_ci_upper  obs_ci_lower  obs_ci_upper
+0  88.38095  0.926114       85.99266       90.76924     78.544814     98.217086
+Predicted Life Expectancy: 88.38
+99% Confidence Interval: [85.99, 90.77]
+
+ Question 6: AIC Comparison
+AIC of Full Model: 8884.48
+AIC of Smaller Model: 9002.56
+The full model has a lower AIC, indicating it is preferred.
+
+ End of Problem 2

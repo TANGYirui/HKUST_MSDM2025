@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+ <html>
+ <body>
+     <h3>Interesting unknown facts about butterflies</h3>
+     <ul>
+         <li>The fastest butterflies can fly up to 30 miles per hour.</li>
+         <li>There are around 28,000 species of butterflies in the world</li>
+    </ul>
+    <p id="name_origin"> Many believe butterflies got their name because they would fly around the buckets of milk on farms. While the milk was being churned into butter, many noticed these flying insects would appear and soon they were being called butterflies. </p>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Fesoj_-_Papilio_machaon_%28by%29.jpg" style="width:100px">
+</body>
+</html>
+
+<script>
+document.getElementById("name_origin").addEventListener("click", myFunction);
+
+function myFunction() {
+    var newPara = document.createElement('p');
+    newPara.textContent = 'Butterflies are amazing!';
+    this.insertAdjacentElement('afterend', newPara);
+}
+</script>

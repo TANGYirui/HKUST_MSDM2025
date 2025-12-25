@@ -1,0 +1,481 @@
+% !TEX program = xelatex
+% 上面这行是 "魔法注释", 告诉某些编辑器（如VS Code）自动使用 XeLaTeX 编译
+
+\documentclass[9pt,a4paper]{article} % 使用 9pt 小字体以容纳更多内容
+
+% ========== 1. 页面与布局设置 (Page & Layout) ==========
+\usepackage[margin=0.3in]{geometry}% 核心：0.5英寸的极窄页边距
+\usepackage{multicol} % 用于创建多列环境
+\setlength{\columnsep}{0.5cm} % 设置两列之间的间距
+
+% ========== 2. 中文与字体支持 (Chinese & Font) ==========
+\usepackage{ctex} % 核心：加载ctex宏包，自动支持中文排版
+
+% ========== 3. 排版微调与优化 (Tuning & Optimization) ==========
+\usepackage{microtype} % 微调字符和单词间距，使排版更美观、更紧凑
+\usepackage{setspace} % 用于行间距控制
+\linespread{0.9} % 设置为0.9倍行距，紧凑但不拥挤
+\usepackage{ragged2e} % 提供 \RaggedRight 命令，在窄列中左对齐效果更好
+
+% ========== 4. 数学与列表工具 (Math & List) ==========
+\usepackage{amsmath,amssymb} % 强大的数学公式支持
+\usepackage{enumitem} % 自定义列表环境
+\setlist{nosep, leftmargin=*} % 全局设置：移除列表的垂直间距，并减少左边距
+
+% ========== 5. 自定义命令 (Custom Commands) ==========
+% 定义一个非常紧凑的节标题样式，上下有水平线分割，醒目且不占空间
+\newcommand{\mysection}[1]{\vspace{0.5em}\hrule\vspace{0.3em}\noindent\textbf{\large #1}\vspace{0.1em}}
+
+% ========== 文档全局设置 ==========
+\pagestyle{empty} % 去除页眉、页脚和页码
+
+% =======================================================
+% ==================== 文档正文开始 =====================
+% =======================================================
+\begin{document}
+
+% ========== 顶部标题栏 (已根据您的要求移除) ==========
+% 此处原有的 \begin{center} ... \end{center} 标题代码块已被完全删除。
+
+% ========== 两列正文环境 (Main Content) ==========
+% 内容会从这里直接开始，紧贴着顶部的页边距
+\begin{multicols}{2}
+\RaggedRight % 使用左对齐，避免在窄列中出现过大的单词间距
+
+% 您可以直接从这里开始填写您的第一个主题
+
+
+
+% 您可以将下面的所有代码粘贴到 \begin{multicols}{2} 之后
+
+\mysection{一、基础统计量公式}
+
+
+\textbf{2. 方差与标准差 (Variance \& Standard Deviation)}
+\begin{itemize}
+    \item 总体方差: $\sigma^2 = \frac{1}{N} \sum_{i=1}^{N} (X_i - \mu)^2$
+    \item 样本方差: $s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X})^2$ (分母$n-1$为无偏估计)
+    \item 标准差: 总体: $\sigma = \sqrt{\sigma^2}$; 样本: $s = \sqrt{s^2}$
+\end{itemize}
+
+\textbf{3. 协方差 (Covariance)}
+\begin{itemize}
+    \item 公式: $Cov(X,Y) = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X})(Y_i - \bar{Y})$
+    \item 性质: $Cov(X,X) = s_X^2$ (变量与自身的协方差等于其样本方差)
+\end{itemize}
+
+\textbf{4. 相关系数 (Correlation Coefficient)}
+\begin{itemize}
+    \item 公式: $r = \frac{Cov(X,Y)}{s_X s_Y} = \frac{\sum (X_i - \bar{X})(Y_i - \bar{Y})}{\sqrt{\sum (X_i - \bar{X})^2} \sqrt{\sum (Y_i - \bar{Y})^2}}$     \item 特殊关系: 简单线性回归中, $R^2 = r^2$ (即决定系数等于相关系数的平方)
+\end{itemize}
+
+\mysection{二、误差与预测相关公式}
+\textbf{1. 平均平方预测误差 (ASPE)}
+\begin{itemize}
+    \item 分解式: $E[(Y - \hat{f}(X))^2] = [\text{Bias}(\hat{f}(X))]^2 + \text{Var}(\hat{f}(X)) + \text{Var}(\epsilon)$ ($Var(\epsilon)$为不可约误差, 是预测误差的理论下限)
+\end{itemize}
+
+\textbf{2. 偏差 (Bias) 与方差 (Variance)}
+\begin{itemize}
+    \item 偏差: $\text{Bias}(\hat{f}(x_0)) = E[\hat{f}(x_0)] - f(x_0)$ (反映模型“欠拟合”程度)
+    \item 方差: $\text{Var}(\hat{f}(x_0)) = E[(\hat{f}(x_0) - E[\hat{f}(x_0)])^2]$ (反映模型对训练数据波动的敏感度, 体现“过拟合”风险)
+\end{itemize}
+
+\textbf{3. 均方误差 (MSE)}
+\begin{itemize}
+    \item 训练 MSE: $MSE_{train} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$ (易因过拟合低估真实误差)
+    \item 测试 MSE: $MSE_{test} = \frac{1}{m} \sum_{i=1}^{m} (y_i^{\text{test}} - \hat{y}_i^{\text{test}})^2$ (衡量模型泛化能力的核心指标, 数值越低越好)
+\end{itemize}
+
+\mysection{三、回归相关平方和公式}
+\textbf{1. 总平方和 (TSS, Total Sum of Squares)}
+\begin{itemize}
+    \item 公式: $TSS = \sum_{i=1}^{n} (y_i - \bar{y})^2$ (反映响应变量的总变异)
+\end{itemize}
+
+\textbf{2. 残差平方和 (RSS, Residual Sum of Squares)}
+\begin{itemize}
+    \item 公式: $RSS = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$ (反映模型未解释的变异, 数值越低说明拟合越好)
+\end{itemize}
+
+\textbf{3. 解释平方和 (ESS, Explained Sum of Squares)}
+\begin{itemize}
+    \item 公式: $ESS = \sum_{i=1}^{n} (\hat{y}_i - \bar{y})^2$ (反映模型解释的变异)
+    \item 关系: $TSS = ESS + RSS$
+\end{itemize}
+
+\textbf{4. 决定系数$R^2$与调整后$R^2$}
+\begin{itemize}
+    \item $R^2$: $R^2 = 1 - \frac{RSS}{TSS} = \frac{ESS}{TSS}$ (模型解释变异的比例, 但会随变量数增加而虚高)
+    \item 调整后$R^2$: $R_{adj}^2 = 1 - \frac{RSS/(n-p-1)}{TSS/(n-1)}$ 
+    \end{itemize}
+
+\mysection{四、分类相关误差公式}
+\textbf{1. 平均误分类误差率}
+\begin{itemize}
+    \item 公式: $Err = \frac{1}{n} \sum_{i=1}^{n} I(y_i \neq \hat{y}_i)$ ($I(\cdot)$为指示函数, 结果为1则错, 为0则对)
+\end{itemize}
+
+\textbf{2. 混淆矩阵衍生指标}
+\begin{itemize}
+    \item TPR (召回率): $TPR = \frac{TP}{TP+FN}$ (反映正样本的识别能力)
+    \item FPR: $FPR = \frac{FP}{FP+TN}$ (反映负样本被误判为正类的概率)
+    \item Precision (精确率): $Precision = \frac{TP}{TP+FP}$ (预测为正的样本中真实为正的比例)
+    \item F1分数: $F1 = \frac{2 \times \text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}$ (调和精确率与召回率, 适用于类别不平衡场景)
+\end{itemize}
+
+\mysection{五、模型选择相关统计量}
+\textbf{1. Mallow's $C_p$}
+\begin{itemize}
+    \item 公式: $C_p = \frac{1}{n} (RSS + 2k\hat{\sigma}^2)$ ($k$为参数个数, $\hat{\sigma}^2$为残差方差估计)
+    \item 判断: 最优模型的$C_p$值接近$k+1$, 数值小说明模型拟合与复杂度平衡好。
+\end{itemize}
+
+\textbf{2. AIC (Akaike 信息准则)}
+\begin{itemize}
+    \item 公式: $AIC = -2\log L + 2k$ ($L$为似然函数, $k$为参数个数)
+    \item 判断: 数值越小越好, 避免过拟合。
+\end{itemize}
+
+\textbf{3. BIC (贝叶斯信息准则)}
+\begin{itemize}
+    \item 公式: $BIC = -2\log L + k\log n$ ($n$为样本量, 对参数个数的惩罚比AIC更重)
+    \item 判断: 数值越小越好, 更倾向于选择简单模型, 适合大样本。
+\end{itemize}
+
+% 在这里结束粘贴
+
+% 您可以将下面的所有代码粘贴到您已有的 \begin{multicols}{2} 环境中
+
+\mysection{主成分分析 (PCA) 核心步骤}
+
+\textbf{1. 预处理: 数据标准化 (必做)}
+\begin{itemize}
+    \item \textbf{目的:} 消除量纲影响，使所有变量在同一尺度上可比。
+    \item \textbf{公式:} $Z_j = \frac{X_j - \bar{X}_j}{s_j}$
+    \item \textbf{说明:} 标准化后, 每个变量 $Z_j$ 的均值为0, 方差为1。
+\end{itemize}
+
+\textbf{2. 计算协方差/相关矩阵 S}
+\begin{itemize}
+    \item \textbf{核心:} 对标准化后的数据矩阵 $\mathbf{Z}$ (n行p列) 计算协方差矩阵。
+    \item \textbf{公式 (矩阵形式):} $\mathbf{S} = \frac{1}{n-1}\mathbf{Z}^T\mathbf{Z}$
+    \item \textbf{说明:} 由于数据已标准化, 此时的协方差矩阵 $\mathbf{S}$ \textbf{等价于} 相关系数矩阵 $\mathbf{R}$。
+\end{itemize}
+
+\textbf{3. 特征值分解 (核心)}
+\begin{itemize}
+    \item \textbf{目标:} 从协方差矩阵 $\mathbf{S}$ 中提取主成分的方向和解释的方差。
+    \item \textbf{关键方程:} $\mathbf{S}\mathbf{e}_k = \lambda_k \mathbf{e}_k$
+    \item \textbf{产出:}
+        \begin{itemize}
+            \item \textbf{特征值:} $\lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_p \ge 0$ \\ (代表第 $k$ 个主成分所解释的方差)
+            \item \textbf{特征向量:} $\mathbf{e}_k = (e_{k1}, \dots, e_{kp})^T$ \\ (单位向量, 决定第 $k$ 个主成分的方向)
+        \end{itemize}
+\end{itemize}
+
+\textbf{4. 构建主成分 (PC)}
+\begin{itemize}
+    \item \textbf{公式:} $PC_k = e_{k1}Z_1 + e_{k2}Z_2 + \dots + e_{kp}Z_p$
+    \item \textbf{解读:} 第 $k$ 个主成分是原始标准化变量 $Z_j$ 的线性组合。系数 $e_{kj}$ 称为**载荷(Loading)**, 其绝对值大小反映了变量 $Z_j$ 对 $PC_k$ 的贡献度。
+\end{itemize}
+
+\textbf{5. 选择主成分数量}
+\begin{itemize}
+    \item \textbf{指标:} 累计方差贡献率 (Cumulative Explained Variance)。
+    \item \textbf{公式:} 累计贡献率$_m = \frac{\sum_{j=1}^{m}\lambda_j}{\sum_{j=1}^{p}\lambda_j}$
+    \item \textbf{法则:} 通常选取前 $m$ 个主成分, 使其累计贡献率达到 **80\% ~ 90\%**。
+\end{itemize}
+
+\textbf{6. 关键特性 (必记)}
+\begin{itemize}
+    \item \textbf{不相关性 (正交):} 主成分之间相互独立。\\ $\text{Cov}(PC_k, PC_l) = 0 \quad (k \neq l)$
+    \item \textbf{方差守恒:} 主成分的总方差等于原始标准化变量的总方差。\\ $\sum_{k=1}^{p} \lambda_k = p$
+\end{itemize}
+
+% --- 以下是新增的部分 ---
+\textbf{7. 优缺点与关键考量}
+\begin{itemize}
+    \item \textbf{优点:} 当少数几个主成分足以解释大部分预测变量的变异，并且这些主成分也与响应变量相关时，主成分回归 (PCR) 的效果很好。
+    \item \textbf{无监督性质 (缺点):} PCA在确定主成分方向时\textbf{没有使用}响应变量 Y，是一个无监督 (unsupervised) 的方法。
+    \item \textbf{潜在的严重缺陷:} 无法保证那些最能解释预测变量方差的方向，就是最适合用来预测响应变量的方向。可能出现解释了大量数据方差的主成分，却与响应变量Y关系很弱的情况。
+    \item \textbf{模型解释性 (缺点):} PCR不产生稀疏模型，因为每个主成分通常都是所有原始预测变量的线性组合，这使得模型的可解释性变差。
+\end{itemize}
+
+
+
+
+
+
+\mysection{ROC 曲线与 AUC}
+
+\textbf{ROC 曲线 (Receiver Operating Characteristics Curve)}
+\begin{itemize}
+    \item \textbf{定义:} ROC 曲线是一种图形化工具，用于评估二元分类模型的性能。它通过在一个模型中改变判别\textbf{阈值(threshold)}，来展示其\textbf{真阳性率(TPR)}与\textbf{假阳性率(FPR)}之间的关系。
+    \item \textbf{坐标轴:}
+        \begin{itemize}
+            \item \textbf{Y轴 (真阳性率):} 也称灵敏度(Sensitivity)或召回率(Recall)。公式为: $TPR = \frac{TP}{TP+FN}$
+            \item \textbf{X轴 (假阳性率):} 等于 1 - 特异度(Specificity)。公式为: $FPR = \frac{FP}{FP+TN}$
+        \end{itemize}
+    \item \textbf{作用与解读:} ROC曲线可以帮助理解分类器在所有可能阈值下的性能。曲线越靠近左上角，代表模型性能越好。对角线代表随机猜测。
+\end{itemize}
+
+\textbf{AUC (Area Under the Curve)}
+\begin{itemize}
+    \item \textbf{定义:} AUC 指的是 ROC 曲线下方的面积，是衡量分类器总体性能的单一数值。
+    \item \textbf{解读:}
+        \begin{itemize}
+            \item AUC 取值范围为 $[0, 1]$，数值越高，模型性能越好。
+            \item AUC = 0.5: 模型表现等同于随机猜测。
+            \item AUC = 1.0: 代表一个完美的分类器。
+        \end{itemize}
+\end{itemize}
+
+
+
+
+
+
+
+
+\mysection{重采样方法 (Resampling Methods)}
+
+\textbf{1. 验证集方法 (Validation-Set Approach)}
+\begin{itemize}
+    \item \textbf{定义:} 将原始数据集随机分成两部分：一个\textbf{训练集(training set)}和一个\textbf{验证集(validation set)}。
+    \item \textbf{流程:}
+        \begin{enumerate}
+            \item 在训练集上拟合模型。
+            \item 使用模型对验证集进行预测。
+            \item 计算验证集上的误差(如MSE)，作为对测试误差的估计。
+        \end{enumerate}
+    \item \textbf{缺点:}
+        \begin{itemize}
+            \item \textbf{高变异性:} 测试误差的估计值依赖于具体的数据划分，可能高度可变。
+            \item \textbf{高估测试误差:} 由于模型仅在部分数据上训练，通常会高估最终模型(在全部数据上拟合)的测试误差。
+        \end{itemize}
+\end{itemize}
+
+\textbf{2. K-折交叉验证 (K-Fold Cross-Validation)}
+\begin{itemize}
+    \item \textbf{定义:} 将数据集随机分成 K 个大小基本相等的子集(称为“折”, folds)。
+    \item \textbf{流程:} 迭代K次，每次将1折作为验证集，其余 K-1 折作为训练集来拟合模型并计算误差。最终将K次误差进行平均。
+    \item \textbf{公式 (回归):} $CV_{(K)} = \sum_{k=1}^{K} \frac{n_k}{n} MSE_k$
+    \item \textbf{关键考量:} 通常选择 \textbf{K=5 或 K=10}，这在偏差-方差权衡(bias-variance trade-off)中提供了很好的折中。
+\end{itemize}
+
+\textbf{3. 留一法交叉验证 (Leave-One-Out, LOOCV)}
+\begin{itemize}
+    \item \textbf{定义:} K-折交叉验证的一个特例，其中 K 等于样本量 n。
+    \item \textbf{流程:} 每次只留出1个观测值作为验证集，用剩下的 n-1 个观测值训练模型，重复n次。
+    \item \textbf{优点:} 测试误差的估计几乎是\textbf{无偏的}。
+    \item \textbf{缺点:} 每次迭代的训练集高度相似，导致误差估计的均值具有\textbf{高方差}。计算成本通常非常高。
+\end{itemize}
+
+\textbf{4. Bootstrap}
+\begin{itemize}
+    \item \textbf{定义:} 一种通过从原始数据集中进行\textbf{有放回的随机抽样(sampling with replacement)}来量化估计量不确定性的方法。
+    \item \textbf{流程:}
+        \begin{enumerate}
+            \item 从原始数据集中有放回地抽取n个样本，创建一个Bootstrap数据集。
+            \item 在此数据集上计算感兴趣的统计量(如一个回归系数)。
+            \item 重复以上步骤 B 次 (如1000次)，得到 B 个统计量的估计值。
+        \end{enumerate}
+    \item \textbf{应用:} 主要用于\textbf{估计标准误(Standard Error)}和构建\textbf{置信区间(Confidence Interval)}。
+\end{itemize}
+
+
+
+
+
+
+\mysection{理论最优预测与分类}
+
+\textbf{1. 最优预测器 (Optimal Predictor): $E(Y|X=x)$}
+\begin{itemize}
+    \item \textbf{定义:} 在回归问题中，最优的预测函数 $f(x)$ 是在给定预测变量 $X=x$ 的条件下，响应变量 Y 的期望值，被称为\textbf{回归函数(regression function)}。
+    $$ f(x) = E(Y|X=x) $$
+    \item \textbf{最优性:} 回归函数是在\textbf{均方预测误差(mean-squared prediction error)}准则下的最优预测器，它能在所有点 $X=x$ 上最小化 $E[(Y-g(X))^2|X=x]$。
+    \item \textbf{误差分解:} 总预测误差可分解为：
+        \begin{itemize}
+            \item \textbf{可约误差(Reducible Error):} 源于估计函数 $\hat{f}(x)$ 与真实最优函数 $f(x)$ 之间的差距，即 $[f(x) - \hat{f}(x)]^2$。可以通过改进模型来减小。
+            \item \textbf{不可约误差(Irreducible Error):} 源于随机噪声 $\epsilon$，即 $Var(\epsilon)$。这是任何模型都无法消除的误差下限。
+        \end{itemize}
+\end{itemize}
+
+\textbf{2. 贝叶斯最优分类器 (Bayes Optimal Classifier)}
+\begin{itemize}
+    \item \textbf{定义:} 该分类器将一个观测值 $x$ 分配给使其\textbf{后验概率}最大的类别。首先定义条件类别概率：
+    $$ p_k(x) = \text{Pr}(Y=k|X=x) $$
+    分类规则为：如果 $p_j(x) = \max\{p_1(x), \dots, p_K(x)\}$，则将观测值分类为类别 $j$。
+    \item \textbf{最优性:} 该分类器能够在总体(population)上达到理论上最低的\textbf{误分类错误率(misclassification error rate)}。
+\end{itemize}
+
+\textbf{3. 贝叶斯决策边界 (Bayes Decision Boundaries)}
+\begin{itemize}
+    \item \textbf{定义:} 决策边界是特征空间中那些使得任意两个类别的后验概率相等的点构成的集合。例如，在两个类别的情况下，边界是满足 $p_1(x) = p_2(x)$ 的所有点 $x$ 的集合。
+    \item \textbf{作用:} 这些边界将特征空间划分为多个区域，每个区域对应一个类别。
+    \item \textbf{最优性:} 如果我们知道真实的条件类别概率（即知道了贝叶斯决策边界），使用这些边界进行分类将产生所有可能分类器中最低的误分类率。
+\end{itemize}
+
+
+
+
+
+\mysection{1. K-最近邻 (K-Nearest Neighbor, KNN)}
+KNN是一种非参数方法，通过查找测试点最近的K个训练样本来进行预测。
+\begin{itemize}
+    \item \textbf{回归 (Regression):} KNN回归通过计算新观测点最近的K个邻居响应变量的平均值来进行预测。
+    $$ \hat{f}(x)=\text{Ave}(Y|X\in\mathcal{N}(x)) $$
+    \item \textbf{分类 (Classification):} KNN分类器通过识别距离新观测点最近的K个邻居，并以这些邻居中出现最频繁的类别作为预测结果(投票机制)。
+    \item \textbf{模型复杂度:} 模型的灵活性由K值决定。
+    \begin{itemize}
+        \item \textbf{较小的 K值} (如K=1) 会产生非常灵活、不规则的决策边界，可能导致低偏差但高方差(过拟合)。
+        \item \textbf{较大的 K值} 会产生更平滑的决策边界，降低方差但可能增加偏差。
+    \end{itemize}
+    \item \textbf{维度灾难:} 当预测变量维度 $p$ 很高时，KNN性能会下降，因为在高维空间中，最近的邻居也可能离目标点很远。
+\end{itemize}
+
+\mysection{2. 线性回归 (Linear Regression)}
+
+\begin{itemize}
+    \item \textbf{模型 (Model):}
+    $$ Y = \beta_0 + \beta_1X_1 + \dots + \beta_pX_p + \epsilon $$
+    $\beta_j$ 被解释为在保持所有其他预测变量固定的情况下，$X_j$每增加一个单位对Y的平均影响。
+    \item \textbf{目标函数 (Objective):} 最小化\textbf{残差平方和(RSS)}。
+    $$ \text{RSS} = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 $$
+    \item \textbf{拟合解 (Solution):} 通过最小二乘法找到使RSS最小的系数 $\hat{\beta}$。矩阵形式的解为:
+    $$ \hat{\beta} = (X'X)^{-1}X'Y $$
+    \item \textbf{不确定性 (Uncertainty):}
+    \begin{itemize}
+        \item \textbf{标准误(SE):} 反映系数估计值在重复抽样下的变化程度，用于计算置信区间。
+        \item \textbf{置信区间:} 提供参数真实值可能所在的范围。
+        \item \textbf{预测区间:} 为单个新观测值提供一个可能范围的估计，比置信区间更宽。
+    \end{itemize}
+  \item \textbf{检验 (Testing):}
+    \begin{itemize}
+        \item \textbf{t-检验 (t-test):} 用于检验单个预测变量与响应变量的关系，即检验 $H_0: \beta_j = 0$。
+        \begin{itemize}
+            \item \textbf{公式:}
+            $$ t = \frac{\hat{\beta}_j - 0}{\text{SE}(\hat{\beta}_j)} $$
+            在 $H_0$ 成立的假设下，该统计量服从自由度为 $n-p-1$ (多元) 或 $n-2$ (简单) 的 t 分布。
+            \item \textbf{判断逻辑:} 计算出 t 统计量后，可以得到一个 p-value。如果 p-value 小于预设的显著性水平 (如 0.05)，则拒绝原假设 $H_0$，认为该变量是显著的。或者, 如果 $|t|$ 的绝对值大于 t 分布的临界值 (如 $t_{n-2, 1-\alpha/2}$)，则拒绝 $H_0$。
+        \end{itemize}
+        
+        \item \textbf{F-检验 (F-test):} 用于检验模型中是否至少有一个预测变量是有用的，即检验 $H_0: \beta_1 = \dots = \beta_p = 0$。
+        \begin{itemize}
+            \item \textbf{公式:}
+            $$ F = \frac{(\text{TSS}-\text{RSS})/p}{\text{RSS}/(n-p-1)} $$
+            其中 TSS 是总平方和, RSS 是残差平方和。在 $H_0$ 成立的假设下，该统计量服从 $F_{p, n-p-1}$ 分布。
+            \item \textbf{判断逻辑:} 计算出 F 统计量后，说明拒绝 $H_0$ 的证据越强。如果 p-value 很小 (如小于0.05)，我们可以拒绝原假设，认为模型中至少有一个变量是显著的。或者，如果计算出的 F 值大于 $F_{p, n-p-1}$ 分布的临界值 (如 $F_{k, n-k-1, 1-\alpha}$)，则拒绝 $H_0$。
+        \end{itemize}
+    \end{itemize}
+    
+\mysection{3. 逻辑回归 (Logistic Regression)}
+用于处理二分类问题。
+\begin{itemize}
+    \item \textbf{模型:} 对响应变量属于某个类别的\textbf{概率} $p(X) = \text{Pr}(Y=1|X)$ 进行建模。使用\textbf{logistic函数}将输出映射到 $[0, 1]$ 区间。
+    $$ p(X) = \frac{e^{\beta_0 + \dots + \beta_pX_p}}{1 + e^{\beta_0 + \dots + \beta_pX_p}} $$
+    通过\textbf{logit变换}，模型可表示为对数几率(log-odds)的线性形式:
+    $$ \log\left(\frac{p(X)}{1-p(X)}\right) = \beta_0 + \dots + \beta_pX_p $$
+    \item \textbf{参数估计:} 通过\textbf{最大似然估计(MLE)}来拟合。
+    \item \textbf{系数解释:} $e^{\beta_j}$ 表示\textbf{优势比(Odds Ratio)}，即当 $X_j$ 增加一个单位时，事件发生的优势变化的倍数。
+\end{itemize}
+
+\mysection{4. 多类别逻辑回归}
+逻辑回归在类别数 K>2 时的推广。
+\begin{itemize}
+    \item \textbf{模型:} 为每个类别拟合一个线性函数，并使用\textbf{softmax函数}将输出转换为概率。
+    $$ \text{Pr}(Y=k|X) = \frac{e^{\beta_{k0} + \dots + \beta_{kp}X_p}}{\sum_{l=1}^{K} e^{\beta_{l0} + \dots + \beta_{lp}X_p}} $$
+\end{itemize}
+
+\mysection{5. 线性判别分析 (LDA)}
+一种生成模型，对每个类别中预测变量的分布进行建模。
+\begin{itemize}
+    \item \textbf{核心假设:} 每个类别中的 $X$ 服从多元高斯分布，且所有类别\textbf{共享相同的协方差矩阵} $\Sigma$。
+    \item \textbf{决策边界:} 类别之间的决策边界是\textbf{线性的}。
+    \item \textbf{判别函数:}
+    $$ \delta_k(x) = x^T\Sigma^{-1}\mu_k - \frac{1}{2}\mu_k^T\Sigma^{-1}\mu_k + \log(\pi_k) $$
+\end{itemize}
+
+\mysection{6. 二次判别分析 (QDA)}
+LDA的一个更灵活的变体。
+\begin{itemize}
+    \item \textbf{核心假设:} 每个类别中的 $X$ 服从多元高斯分布，但\textbf{允许每个类别拥有其自身的协方差矩阵} $\Sigma_k$。
+    \item \textbf{决策边界:} 类别之间的决策边界是\textbf{二次的(quadratic)}。
+    \item \textbf{判别函数:}
+    $$ \delta_k(x) = -\frac{1}{2}\log|\Sigma_k| - \frac{1}{2}(x-\mu_k)^T\Sigma_k^{-1}(x-\mu_k) + \log(\pi_k) $$
+    由于$\Sigma_k$因类别而异，上式中包含$x$的二次项，因此得名。
+\end{itemize}
+
+\mysection{7. 朴素贝叶斯分类器}
+基于贝叶斯定理的生成模型。
+\begin{itemize}
+    \item \textbf{核心假设:} 在给定类别的条件下，所有预测变量 $X_1, \dots, X_p$ 都是\textbf{条件独立的}。
+    $$ f_k(x) = \prod_{j=1}^{p} f_{kj}(x_j) $$
+    \item \textbf{优势:} 极大地简化了类条件密度的估计，在 $p$ 很大时(如文本分类)特别有效。
+\end{itemize}
+
+\mysection{8. 贝叶斯定理 (Bayes' Theorem)}
+所有生成式分类模型的理论基础。
+\begin{itemize}
+    \item \textbf{公式:}
+    $$ P(Y=k|X=x) = \frac{P(X=x|Y=k) \cdot P(Y=k)}{P(X=x)} $$
+    \item \textbf{在分类中的形式:}
+    $$ P(Y=k|X=x) = \frac{\pi_k f_k(x)}{\sum_{l=1}^{K} \pi_l f_l(x)} $$
+    其中, $P(Y=k|X=x)$是\textbf{后验概率}，$\pi_k$是\textbf{先验概率}，$f_k(x)$是\textbf{类条件密度}。
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+ \end{itemize}
+ 
+ 
+ \mysection{正态分布 (Normal Distribution)}
+
+正态分布，也称为高斯分布 (Gaussian Distribution)，由其均值 $\mu$ 和方差 $\sigma^2$ 两个参数决定，记为 $N(\mu, \sigma^2)$。
+
+\textbf{1. 概率密度函数 (PDF)}
+\begin{itemize}
+    \item \textbf{定义:} 描述了随机变量在某一点附近取值的相对可能性。
+    \item \textbf{公式:}
+    $$ f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{ - \frac{1}{2} \left( \frac{x-\mu}{\sigma} \right)^2 } $$
+    其中 $e \approx 2.71828$ 是自然常数。
+\end{itemize}
+
+\textbf{2. 标准正态分布 (Standard Normal Distribution)}
+\begin{itemize}
+    \item \textbf{定义:} 均值为0、标准差为1的正态分布，记为 $N(0, 1)$。
+    \item \textbf{标准化 (Z-score):} 任何正态分布的随机变量 $X$ 都可以通过 Z-score 变换转换为标准正态分布的随机变量 $Z$。
+    $$ Z = \frac{X - \mu}{\sigma} $$
+    Z-score 的值表示原始数据点偏离均值的标准差倍数。
+\end{itemize}
+
+\textbf{3. 累积分布函数 (CDF)}
+\begin{itemize}
+    \item \textbf{定义:} 随机变量 $X$ 的取值小于或等于某个值 $x$ 的概率，记为 $\Phi(x)$。
+    $$ \Phi(x) = P(X \le x) = \int_{-\infty}^{x} f(t) \,dt $$
+    对于标准正态分布，$P(Z \le z)$ 通常通过查 Z-table 获得。
+\end{itemize}
+
+\textbf{4. 经验法则 (68-95-99.7 Rule)}
+\begin{itemize}
+    \item 描述了数据在以均值为中心的特定标准差范围内的分布比例。
+    \begin{itemize}
+        \item 约 \textbf{68\%} 的数据落在均值的 \textbf{1个标准差} ($\sigma$) 范围内 $(\mu \pm \sigma)$。
+        \item 约 \textbf{95\%} 的数据落在均值的 \textbf{2个标准差} ($2\sigma$) 范围内 $(\mu \pm 2\sigma)$。
+        \item 约 \textbf{99.7\%} 的数据落在均值的 \textbf{3个标准差} ($3\sigma$) 范围内 $(\mu \pm 3\sigma)$。
+    \end{itemize}
+\end{itemize}
+\end{multicols}
+\end{document}
+% ==================== 文档正文结束 =====================
