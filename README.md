@@ -7,7 +7,7 @@ I am a student from the **Fall 2025** cohort. This repository contains **all the
 Currently, I have just completed my **first semester (Fall 2025)**, so the repository includes code from the courses taken this semester. Code from the **Spring 2026** semester and beyond will be added at the end of each term once the courses are completed.
 
 ### Tips ！！！
-Heads up for 5001—be super careful with every assignment and exam PDF. Dumping them straight into an AI won’t magically solve the exams; even with the cheatsheet, you actually need to think. 5002 assignments? Sometimes AI just stares at them blankly—you’re better off rolling up your sleeves and doing it yourself. For 5056, the final project data is available here for modeling: https://networkrepository.com/index.php
+Heads up for 5001, you need to be super careful with every assignment and exam PDF. Dumping them straight into an AI won’t magically solve the exams; even with the cheatsheet, you actually need to think. For 5002 assignments,  Sometimes AI just stares at them blankly—you’re better off rolling up your sleeves and doing it yourself. For 5056, the final project data is available here for modeling: https://networkrepository.com/index.php
 
 ### What’s Included
 - Complete, runnable code implementations for assignments and projects  
